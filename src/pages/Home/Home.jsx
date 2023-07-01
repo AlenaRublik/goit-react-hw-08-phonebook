@@ -12,7 +12,7 @@ export const Home = () => {
       <>
       <Section>
       <ReactPlayer
-        url='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+        url='https://cdn.pixabay.com/vimeo/817104245/153976.mp4?width=1280&hash=21c0a6fdf489fa6d5247f52416a7c3e9ef86c65d'
         width='500px'
         height='300px'
         controls
