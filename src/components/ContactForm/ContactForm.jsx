@@ -1,83 +1,73 @@
-import { Form, Button, Label, Input, Div } from './ContactForm.styled';
-import { toast } from 'react-toastify';
-
-import { useState } from 'react';
+import { ErrorMessage, Formik } from 'formik';
+import { object, string } from 'yup';
+import PropTypes from 'prop-types';
+import { MdPersonAdd } from 'react-icons/md';
 import {
-  useAddContactMutation,
-  useGetContactsQuery,
-} from 'redux/contactsSlice';
-
-export const ContactForm = () => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const [addContact] = useAddContactMutation();
-  const { data: contacts } = useGetContactsQuery();
-
-   const reset = () => {
-    setName('');
-    setNumber('');
-  };
-
-  const addNumberContact = async () => {
-    const newContact = { name, number };
-
-    const isContact = contacts.some(
-      contact =>
-        contact.name.toLowerCase() === name.toLowerCase() ||
-        contact.number === number
-    );
-    if (isContact) {
-      toast.info(`${name} is already is contacts`);
-      return;
-    }
-
-    try {
-      await addContact(newContact);
-      toast.success(`${newContact.name} successfully added`);
-    } catch (error) {
-      toast.error('Oops! Something went wrong. Please try again!');
-    }
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    addNumberContact();
-    reset();
-  };
-
-    return (
-      <>
-       <Div>
-        <Form onSubmit={handleSubmit}>
-          <Label>
-            Name
-            <Input
-              type="text"
-              name="name"
-              pattern="[A-Za-zА-Яа-я\s]+"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-            />
-          </Label>
-          <Label>
-            Phone
-            <Input
-              type="tel"
-              name="number"
-              pattern="\+?[0-9\s\-\(\)]+"
-              value={number}
-              onChange={e => setNumber(e.target.value)}
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-            />
-          </Label>
-
-          <Button type="submit">Add contact</Button>
-        </Form>
-        </Div>
-      </>
-    );
+  FormBox,
+  InputName,
+  InputTel,
+  Button,
+  Message,
+  Label,
+  Text,
+} from './ContactForm.styled';
+const initialValues = {
+  name: '',
+  number: '',
 };
 
+const userSchema = object({
+  name: string()
+    .matches(
+      /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
+      "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+    )
+    .required('⚠️Please enter name.'),
+  number: string()
+    .matches(
+      /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
+      'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
+    )
+    .required('Please enter number.'),
+});
+
+const FormContact = ({ onSubmit }) => {
+  function handleSubmit({ name, number }, { resetForm }) {
+    onSubmit(name, number);
+    resetForm();
+  }
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={userSchema}
+    >
+      <FormBox autoComplete="off">
+        <Label>
+          <Text>Name</Text>
+          <InputName placeholder="Enter contact name" type="text" name="name" />
+          <ErrorMessage component={Message} name="name" />
+        </Label>
+        <Label>
+          <Text>Phone</Text>
+          <InputTel
+            placeholder="Enter contact phone"
+            type="tel"
+            name="number"
+          />
+          <ErrorMessage component={Message} name="number" />
+        </Label>
+        <Button type="submit">
+          <MdPersonAdd />
+        </Button>
+      </FormBox>
+    </Formik>
+  );
+};
+
+FormContact.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
+
+export default FormContact;

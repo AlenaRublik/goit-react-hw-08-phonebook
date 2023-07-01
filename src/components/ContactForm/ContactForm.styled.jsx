@@ -1,49 +1,80 @@
-import styled from '@emotion/styled';
+import { Form, Field} from 'formik';
+import styled from 'styled-components';
 
-export const Div = styled.div`
 
-`;
-export const Form = styled.form`
-  margin: 0 auto;
-  width: 500px;
-  text-align: center;
+export const FormBox = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  align-items: center;
+  gap: 30px;
+  font-size: 20px;
+  margin-bottom: 50px;
+  max-width: 500px;
 `;
 export const Label = styled.label`
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 16px;
-  max-width: 300px;
-  text-align: center;
-  color: #5b419b;
-`;
-export const Input = styled.input`
-  display: block;
-  padding: 4px 8px;
-  margin-top: 4px;
-  background-color: #b7f8dd;
-  font-weight: 500;
-  font-size: 16px;
-  color: #392962;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   width: 100%;
-  border-radius: 4px;
-  border-color: #07c274;
-  outline: none;
 `;
-export const Button = styled.button`
-  display: inline-block;
-  margin-left: auto;
+
+export const Text = styled.span`
+  display: flex;
   margin-right: auto;
-  text-align: center;
-  font-family: inherit;
-  width: 200px;
-  cursor: pointer;
-  color: #5b419b;
-  border: 2px solid;
+  justify-content: center;
+  color: rgb(85, 26, 139);
+  font-size: 1.5rem;
+`;
+
+export const InputName = styled(Field)`
+  width: 400px;
+  margin: 0 auto;
+  padding: 10px;
+  border: none;
   border-radius: 10px;
-  border-color: #07c274;
-  transition: transform 1000ms cubic-bezier(0.075, 0.82, 0.165, 1);
-  :hover,
-  :focus {
-    transform: scale(1.08);
+  font-size: 1.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.2s ease;
+
+  &::placeholder {
+    font-size: 20px;
   }
+  &:focus {
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  }
+`;
+
+export const InputTel = styled(InputName)``;
+
+export const Button = styled.button`
+  background-color: rgb(85, 26, 139);
+  color: white;
+  display: flex;
+  width: 120px;
+  min-height: 50px;
+  font-size: 24px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  transition: background-color 1000ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  &:hover,
+  &:focus {
+    background-color: rgba(84, 26, 139, 0.323);
+  }
+`;
+
+export const Message = styled.p`
+  text-align: center;
+  margin-top: 10px;
+  color: #0c0c0c;
+  font-size: 17px;
+  -webkit-text-stroke: 1px black;
+  -webkit-text-fill-color: white;
 `;
